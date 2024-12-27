@@ -9,7 +9,6 @@ public class EventBlobs {
 
     @GetMapping("/event/blob")
     public ResponseEntity<String> addBlobEvent(){
-
         return ResponseEntity.ok("New Blob created");
     }
 
