@@ -95,13 +95,15 @@ public class CosmoDB {
 
         CosmosQueryRequestOptions queryOptions = new CosmosQueryRequestOptions();
         queryOptions.setQueryMetricsEnabled(true);
-        
-        CosmosContainer container = this.getContainer();
-        CosmosItemResponse<Event> result = container.createItem(event);
-
-        return result;
+        try{
+            CosmosContainer container = this.getContainer();
+            CosmosItemResponse<Event> result = container.createItem(event);
+            return result;
+        }catch(Exception e){
+            logger.error("ERROR database : ", e);
+            return null;
+        }
+  
     }
-
-
 
 }
