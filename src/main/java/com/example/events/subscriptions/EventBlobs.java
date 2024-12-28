@@ -1,6 +1,7 @@
 package com.example.events.subscriptions;
 
 
+import java.util.Optional;
 import java.util.Random;
 
 import org.slf4j.Logger;
@@ -29,10 +30,15 @@ public class EventBlobs {
     public ResponseEntity<CosmosPagedIterable<Object>> addBlobEvent(){
         try{
             logger.info("[BLOB CREATED] - Event save on cosmoDB ");
-            CosmosPagedIterable<Object> result = this.cosmoDb.getEvents();
-            return ResponseEntity.status(StatusCodes.OK).body(result);
+            Optional<CosmosPagedIterable<Object>> result = this.cosmoDb.getEvents();
+            if(!result.isEmpty()){
+                return ResponseEntity.status(StatusCodes.OK).body(result.get());
+            }else{
+                logger.error("[BLOB CREATED ERROR] ");
+                return ResponseEntity.status(StatusCodes.BADREQUEST).body(null);
+            }
         }catch(Exception e){
-            logger.error("[BLOB CREATED] " + e.getMessage());
+            logger.error("[BLOB CREATED ERROR] " + e.getMessage());
             return ResponseEntity.status(StatusCodes.BADREQUEST).body(null);
         }
         

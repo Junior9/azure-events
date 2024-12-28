@@ -1,6 +1,7 @@
 package com.example.events.repositories;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,13 +28,13 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class CosmoDB {
 
-    private final String databaseName = "az204bd";
-    private final String containerName = "event";
+    private final String databaseName = "az204";
+    private final String containerName = "events";
     private KeyVault keyVaultSecrets;
     protected static Logger logger = LoggerFactory.getLogger(CosmoDB.class);
 
 
-    private CosmosContainer getContainer() {
+    private CosmosContainer getContainer() throws Exception {
         CosmosDatabase database;
         CosmosClient client;
         keyVaultSecrets = new KeyVault();
@@ -69,17 +70,24 @@ public class CosmoDB {
     }
 
 
-    public CosmosPagedIterable<Object> getEvents() {
+    public Optional<CosmosPagedIterable<Object>> getEvents() {
 
         CosmosQueryRequestOptions queryOptions = new CosmosQueryRequestOptions();
         queryOptions.setQueryMetricsEnabled(true);
         
-        CosmosContainer container = this.getContainer();
+        try{
+            CosmosContainer container = this.getContainer();
 
-        CosmosPagedIterable<Object> result = container.queryItems(
-            "SELECT * FROM c", queryOptions, Object.class);
+            CosmosPagedIterable<Object> result = container.queryItems(
+                "SELECT * FROM c", queryOptions, Object.class);
+    
+            return Optional.of(result);
 
-        return result;
+        }catch(Exception e){
+            logger.error("ERROR database : ", e);
+            return Optional.empty();
+        }
+       
     }
 
 
