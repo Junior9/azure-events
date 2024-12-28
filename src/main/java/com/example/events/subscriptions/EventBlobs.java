@@ -1,10 +1,8 @@
 package com.example.events.subscriptions;
 
-import java.util.Date;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.format.datetime.standard.InstantFormatter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,9 +25,14 @@ public class EventBlobs {
 
     @GetMapping("/event/blob")
     public ResponseEntity<CosmosPagedIterable<Object>> addBlobEvent(){
-        logger.info("[BLOB CREATED] - Event save on cosmoDB ");
-        CosmosPagedIterable<Object> result = this.cosmoDb.getEvents();
-        return ResponseEntity.status(StatusCodes.OK).body(result);
+        try{
+            logger.info("[BLOB CREATED] - Event save on cosmoDB ");
+            CosmosPagedIterable<Object> result = this.cosmoDb.getEvents();
+            return ResponseEntity.status(StatusCodes.OK).body(result);
+        }catch(Exception e){
+            return ResponseEntity.status(StatusCodes.BADREQUEST).body(null);
+        }
+        
     }
 
     @PostMapping("/event/blob")
