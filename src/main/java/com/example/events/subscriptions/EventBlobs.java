@@ -26,6 +26,12 @@ public class EventBlobs {
     protected static Logger logger = LoggerFactory.getLogger(EventBlobs.class);
     private CosmoDB cosmoDb;
 
+
+    @GetMapping("/test")
+    public ResponseEntity<String> test(){
+        return ResponseEntity.ok("Azure App Service");
+    }
+
     @GetMapping("/event/blob")
     public ResponseEntity<CosmosPagedIterable<Object>> addBlobEvent(){
         try{
