@@ -1,6 +1,8 @@
 package com.example.events.subscriptions;
 
 
+import java.util.Random;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +32,7 @@ public class EventBlobs {
             CosmosPagedIterable<Object> result = this.cosmoDb.getEvents();
             return ResponseEntity.status(StatusCodes.OK).body(result);
         }catch(Exception e){
+            logger.error("[BLOB CREATED] " + e.getMessage());
             return ResponseEntity.status(StatusCodes.BADREQUEST).body(null);
         }
         
@@ -42,6 +45,21 @@ public class EventBlobs {
         return ResponseEntity.ok("New Blob created");
     }
 
+
+    @PostMapping("/event/created-blob")
+    public ResponseEntity<String> addBlobEvent2(){
+        try{
+            logger.info("[BLOB CREATED] ");
+            Random rand = new Random();
+            int id = rand.nextInt(1000);
+            this.cosmoDb.setEvents(Event.builder().id(Integer.toString(id)).type("blob").date("").build()); 
+            return ResponseEntity.ok("New Blob created");
+        }catch(Exception e){
+            logger.error("[BLOB CREATED] " + e.getMessage());
+            return ResponseEntity.status(StatusCodes.BADREQUEST).body("Error" + e.getMessage());
+        }
+       
+    }
 
 
 }
