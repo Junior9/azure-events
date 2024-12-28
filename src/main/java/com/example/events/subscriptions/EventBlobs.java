@@ -35,16 +35,16 @@ public class EventBlobs {
     @GetMapping("/event/blob")
     public ResponseEntity<CosmosPagedIterable<Object>> addBlobEvent(){
         try{
-            logger.info("[BLOB CREATED] - Event save on cosmoDB ");
+            logger.info("[GET EVENTS] - Event from cosmoDB ");
             Optional<CosmosPagedIterable<Object>> result = this.cosmoDb.getEvents();
             if(!result.isEmpty()){
                 return ResponseEntity.status(StatusCodes.OK).body(result.get());
             }else{
-                logger.error("[BLOB CREATED ERROR] ");
+                logger.error("[GET EVENTS ERROR] ");
                 return ResponseEntity.status(StatusCodes.BADREQUEST).body(null);
             }
         }catch(Exception e){
-            logger.error("[BLOB CREATED ERROR] " + e.getMessage());
+            logger.error("[GET EVENTS ERROR] " + e.getMessage());
             return ResponseEntity.status(StatusCodes.BADREQUEST).body(null);
         }
         

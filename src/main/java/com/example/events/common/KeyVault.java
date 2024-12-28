@@ -1,5 +1,7 @@
 package com.example.events.common;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.azure.core.exception.ClientAuthenticationException;
@@ -11,6 +13,8 @@ import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 @Component
 public class KeyVault {
 
+    protected static Logger logger = LoggerFactory.getLogger(KeyVault.class);
+
     SecretClient secretClient = new SecretClientBuilder()
     .vaultUrl("https://mkeyvaultaz204.vault.azure.net/")
     .credential(new DefaultAzureCredentialBuilder().build())
@@ -19,11 +23,12 @@ public class KeyVault {
 
     public String getSecret(String key){
          try {
+            logger.info("[KEY VAULT] get key : " + key );
             KeyVaultSecret secret = secretClient.getSecret(key);
+            logger.info("Key : " + secret.getValue() );
             return secret.getValue();
         } catch (ClientAuthenticationException e) {
-            //Handle Exception
-            e.printStackTrace();
+            logger.error("[Key Vault ERROR] "  + e.getMessage());
             return "";
         }
     }
