@@ -84,7 +84,7 @@ public class CosmoDB {
             return Optional.of(result);
 
         }catch(Exception e){
-            logger.error("ERROR database : ", e);
+            logger.error("#### ERROR database : ", e.getMessage());
             return Optional.empty();
         }
        
@@ -100,7 +100,7 @@ public class CosmoDB {
             CosmosItemResponse<Event> result = container.createItem(event);
             return result;
         }catch(Exception e){
-            logger.error("ERROR database : ", e);
+            logger.error("***** ERROR database : ", e.getMessage());
             return null;
         }
   
