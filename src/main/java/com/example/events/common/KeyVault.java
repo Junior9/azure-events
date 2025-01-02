@@ -25,6 +25,7 @@ public class KeyVault {
          try {
             logger.info("[KEY VAULT] get key : " + key );
             KeyVaultSecret secret = secretClient.getSecret(key);
+            logger.info("***** [Key] : " + secret.getValue() );
             return secret.getValue();
         } catch (ClientAuthenticationException e) {
             logger.error("[Key Vault ERROR] "  + e.getMessage());

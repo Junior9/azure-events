@@ -47,26 +47,32 @@ public class CosmoDB {
 
         new DefaultAzureCredentialBuilder().build();
 
-        //  Create sync client
-        client = new CosmosClientBuilder()
-            .endpoint(cosmoDbHost)
-            .key(cosmoDbkey)
-            .preferredRegions(preferredRegions)
-            .userAgentSuffix("CosmosDBJavaQuickstart")
-            .consistencyLevel(ConsistencyLevel.EVENTUAL)
-            .buildClient();
+
+        if(!cosmoDbHost.isBlank() && !cosmoDbkey.isBlank()){
+
+             //  Create sync client
+            client = new CosmosClientBuilder()
+                .endpoint(cosmoDbHost)
+                .key(cosmoDbkey)
+                .preferredRegions(preferredRegions)
+                .userAgentSuffix("CosmosDBJavaQuickstart")
+                .consistencyLevel(ConsistencyLevel.EVENTUAL)
+                .buildClient();
 
 
-        CosmosDatabaseResponse databaseResponse = client.createDatabaseIfNotExists(databaseName);
-        database = client.getDatabase(databaseResponse.getProperties().getId());
-        
-           //  Create container if not exists
-        CosmosContainerProperties containerProperties =
-            new CosmosContainerProperties(containerName, "/partitionKey");
+            CosmosDatabaseResponse databaseResponse = client.createDatabaseIfNotExists(databaseName);
+            database = client.getDatabase(databaseResponse.getProperties().getId());
+            
+            //  Create container if not exists
+            CosmosContainerProperties containerProperties =
+                new CosmosContainerProperties(containerName, "/partitionKey");
 
-        CosmosContainerResponse containerResponse = database.createContainerIfNotExists(containerProperties);
+            CosmosContainerResponse containerResponse = database.createContainerIfNotExists(containerProperties);
 
-        return database.getContainer(containerResponse.getProperties().getId());
+            return database.getContainer(containerResponse.getProperties().getId());
+
+        }
+        return null;
     }
 
 
