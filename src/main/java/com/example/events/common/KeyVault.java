@@ -16,7 +16,7 @@ public class KeyVault {
     protected static Logger logger = LoggerFactory.getLogger(KeyVault.class);
 
     SecretClient secretClient = new SecretClientBuilder()
-    .vaultUrl("https://azkeyvault204.vault.azure.net/")
+    .vaultUrl("https://keyvaultaz204service.vault.azure.net/")
     .credential(new DefaultAzureCredentialBuilder().build())
     .buildClient();
 
